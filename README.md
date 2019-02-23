@@ -19,6 +19,8 @@ The following example can be used to build the Python package:
 
 > python3 setup.py install --user
 
+It may be necessary to add `-DBUILD_SHARED_LIBS=On` when compiling Swarm in order for these bindings to compile.
+
 ## Importing and Setup
 
 The PySwarm module can be imported using:
