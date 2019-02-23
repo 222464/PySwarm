@@ -27,6 +27,8 @@ The PySwarm module can be imported using:
 import pyswarm
 ```
 
+See the examples directory for usage.
+
 ## License
 
 MIT license. See [LICENSE.md](./LICENSE.md) for more information.

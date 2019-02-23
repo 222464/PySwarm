@@ -22,12 +22,12 @@ for i in range(numLayers):
     l._layerType = "conv"
     l._filterRadius = 0 # Dense
     l._numMaps = 24 if i < numLayers - 1 else numActions
-    l._recurrent = False#i < numLayers - 1
+    l._recurrent = i < numLayers - 1
     l._actScalar = 6.0
 
     lds.append(l)
 
-h = pyswarm.PyHierarchy(cs, inputSize, lds, 32)
+h = pyswarm.PyHierarchy(cs, inputSize, lds, 64)
 
 h.setOptAlpha(0.001)
 h.setOptEpsilon(1.0)
