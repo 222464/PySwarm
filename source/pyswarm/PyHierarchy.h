@@ -60,12 +60,20 @@ namespace pyswarm {
             _opt._epsilon = value;
         }
 
+        void setOptGamma(float value) {
+            _opt._gamma = value;
+        }
+
         float getOptAlpha() const {
             return _opt._alpha;
         }
 
         float getOptEpsilon() const {
             return _opt._epsilon;
+        }
+
+        float getOptGamma() const {
+            return _opt._gamma;
         }
     };
 }
