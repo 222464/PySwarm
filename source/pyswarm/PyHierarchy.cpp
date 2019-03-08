@@ -5,7 +5,7 @@
 
 using namespace pyswarm;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int distResolution) {
+PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms) {
     std::vector<std::shared_ptr<swarm::Layer>> layers(layerDescs.size());
 
     swarm::Int3 sizePrev = swarm::Int3(inputSize.x, inputSize.y, inputSize.z);
@@ -39,7 +39,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
 
     _h.create(layers);
 
-    _opt.create(cs._cs, _h.getNumParameters(), distResolution);
+    _opt.create(cs._cs, _h.getNumParameters(), numArms);
 }
 
 void PyHierarchy::step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled) {
