@@ -19,7 +19,7 @@ namespace pyswarm {
         int _poolDiv;
 
         PyLayerDesc()
-        : _layerType("conv"), _filterRadius(1), _numMaps(16), _recurrent(false), _actScalar(6.0f), _poolDiv(2)
+        : _layerType("conv"), _filterRadius(1), _numMaps(16), _recurrent(false), _actScalar(4.0f), _poolDiv(2)
         {}
 
         PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int filterRadius, int numMaps,bool recurrent, float actScalar, int poolDiv)
@@ -33,7 +33,7 @@ namespace pyswarm {
         swarm::OptimizerMAB _opt;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int distResolution);
+        PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms);
 
         void step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled = true);
 
