@@ -1,6 +1,7 @@
 # PySwarm
 
 Python bindings to [Swarm](https://github.com/222464/Swarm)
+
 ## Requirements
 
 An install of [Swarm](https://github.com/222464/Swarm) is required before installing the bindings.
