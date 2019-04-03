@@ -59,6 +59,8 @@ namespace pyswarm {
 
         void setOptGamma(float value) {
             _opt._gamma = value;
+
+            _opt.genFalloff();
         }
 
         float getOptAlpha() const {
