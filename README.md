@@ -18,7 +18,7 @@ This binding requires an installation of [SWIG](http://www.swig.org/) v3+
 
 The following example can be used to build the Python package:
 
-> python3 setup.py install --user
+> python3 setup.py install
 
 It may be necessary to add `-DBUILD_SHARED_LIBS=On` when compiling Swarm in order for these bindings to compile.
 
