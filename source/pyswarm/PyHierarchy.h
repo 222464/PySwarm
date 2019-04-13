@@ -14,18 +14,17 @@ namespace pyswarm {
         int _stride;
         int _numMaps;
         bool _recurrent;
-        float _biasScale;
         float _actScalar;
 
         // Pool
         int _poolDiv;
 
         PyLayerDesc()
-        : _layerType("conv"), _filterRadius(1), _stride(1), _numMaps(16), _recurrent(false), _biasScale(0.0f), _actScalar(16.0f), _poolDiv(2)
+        : _layerType("conv"), _filterRadius(1), _stride(1), _numMaps(16), _recurrent(false), _actScalar(16.0f), _poolDiv(2)
         {}
 
         PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int filterRadius, int stride, int numMaps, bool recurrent, float biasScale, float actScalar, int poolDiv)
-        : _layerType(layerType), _filterRadius(filterRadius), _stride(stride), _numMaps(numMaps), _recurrent(recurrent), _biasScale(biasScale), _actScalar(actScalar), _poolDiv(poolDiv)
+        : _layerType(layerType), _filterRadius(filterRadius), _stride(stride), _numMaps(numMaps), _recurrent(recurrent), _actScalar(actScalar), _poolDiv(poolDiv)
         {}
     };
 

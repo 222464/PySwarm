@@ -17,7 +17,6 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
             l->create(cs._cs, sizePrev, layerDescs[i]._numMaps, layerDescs[i]._filterRadius, layerDescs[i]._stride, layerDescs[i]._recurrent);
 
             l->_actScalar = layerDescs[i]._actScalar;
-            l->_biasScale = layerDescs[i]._biasScale;
             
             layers[i] = std::static_pointer_cast<swarm::Layer>(l);
 
