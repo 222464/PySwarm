@@ -14,7 +14,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
         if (layerDescs[i]._layerType == "conv") {
             std::shared_ptr<swarm::LayerConv> l = std::make_shared<swarm::LayerConv>();
 
-            l->create(cs._cs, sizePrev, layerDescs[i]._numMaps, layerDescs[i]._filterRadius, layerDescs[i]._stride, layerDescs[i]._recurrent);
+            l->create(cs._cs, sizePrev, layerDescs[i]._numMaps, layerDescs[i]._spatialFilterRadius, layerDescs[i]._spatialFilterStride, layerDescs[i]._recurrentFilterRadius, layerDescs[i]._recurrentFilterStride);
 
             l->_actScalar = layerDescs[i]._actScalar;
             
