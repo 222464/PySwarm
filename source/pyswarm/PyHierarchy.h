@@ -61,12 +61,20 @@ namespace pyswarm {
             _opt._epsilon = value;
         }
 
+        void setOptPlayTime(int value) {
+            _opt._playTime = value;
+        }
+
         float getOptAlpha() const {
             return _opt._alpha;
         }
 
         float getOptEpsilon() const {
             return _opt._epsilon;
+        }
+
+        float getOptPlayTime() const {
+            return _opt._playTime;
         }
     };
 }
