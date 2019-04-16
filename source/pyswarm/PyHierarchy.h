@@ -13,7 +13,6 @@ namespace pyswarm {
         int _spatialFilterRadius;
         int _spatialFilterStride;
         int _recurrentFilterRadius;
-        int _recurrentFilterStride;
         int _numMaps;
         float _actScalar;
 
@@ -21,11 +20,11 @@ namespace pyswarm {
         int _poolDiv;
 
         PyLayerDesc()
-        : _layerType("conv"), _spatialFilterRadius(1), _spatialFilterStride(1), _recurrentFilterRadius(1), _recurrentFilterStride(1), _numMaps(16), _actScalar(8.0f), _poolDiv(2)
+        : _layerType("conv"), _spatialFilterRadius(1), _spatialFilterStride(1), _recurrentFilterRadius(1), _numMaps(16), _actScalar(8.0f), _poolDiv(2)
         {}
 
-        PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int spatialFilterRadius, int spatialFilterStride, int recurrentFilterRadius, int recurrentFilterStride, int numMaps, float actScalar, int poolDiv)
-        : _layerType(layerType), _spatialFilterRadius(spatialFilterRadius), _spatialFilterStride(spatialFilterStride), _recurrentFilterRadius(recurrentFilterRadius), _recurrentFilterStride(recurrentFilterStride), _numMaps(numMaps), _actScalar(actScalar), _poolDiv(poolDiv)
+        PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int spatialFilterRadius, int spatialFilterStride, int recurrentFilterRadius, int numMaps, float actScalar, int poolDiv)
+        : _layerType(layerType), _spatialFilterRadius(spatialFilterRadius), _spatialFilterStride(spatialFilterStride), _recurrentFilterRadius(recurrentFilterRadius), _numMaps(numMaps), _actScalar(actScalar), _poolDiv(poolDiv)
         {}
     };
 
