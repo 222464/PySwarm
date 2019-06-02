@@ -57,6 +57,10 @@ namespace pyswarm {
             _opt._alpha = value;
         }
 
+        void setOptBeta(float value) {
+            _opt._beta = value;
+        }
+
         void setOptEpsilon(float value) {
             _opt._epsilon = value;
         }
@@ -67,6 +71,10 @@ namespace pyswarm {
 
         float getOptAlpha() const {
             return _opt._alpha;
+        }
+
+        float getOptBeta() const {
+            return _opt._beta;
         }
 
         float getOptEpsilon() const {
