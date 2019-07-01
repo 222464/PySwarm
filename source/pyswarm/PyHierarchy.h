@@ -15,21 +15,24 @@ namespace pyswarm {
         int _recurrentFilterRadius;
         int _numMaps;
         float _actScalar;
+        float _recurrentScalar;
 
         // Pool
         int _poolDiv;
 
         PyLayerDesc()
-        : _layerType("conv"), _spatialFilterRadius(1), _spatialFilterStride(1), _recurrentFilterRadius(1), _numMaps(16), _actScalar(8.0f), _poolDiv(2)
+        : _layerType("conv"), _spatialFilterRadius(1), _spatialFilterStride(1), _recurrentFilterRadius(1), _numMaps(16), _actScalar(8.0f), _recurrentScalar(0.1f), _poolDiv(2)
         {}
 
-        PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int spatialFilterRadius, int spatialFilterStride, int recurrentFilterRadius, int numMaps, float actScalar, int poolDiv)
-        : _layerType(layerType), _spatialFilterRadius(spatialFilterRadius), _spatialFilterStride(spatialFilterStride), _recurrentFilterRadius(recurrentFilterRadius), _numMaps(numMaps), _actScalar(actScalar), _poolDiv(poolDiv)
+        PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int spatialFilterRadius, int spatialFilterStride, int recurrentFilterRadius, int numMaps, float actScalar, float recurrentScalar, int poolDiv)
+        : _layerType(layerType), _spatialFilterRadius(spatialFilterRadius), _spatialFilterStride(spatialFilterStride), _recurrentFilterRadius(recurrentFilterRadius), _numMaps(numMaps), _actScalar(actScalar), _recurrentScalar(recurrentScalar), _poolDiv(poolDiv)
         {}
     };
 
     class PyHierarchy {
     private:
+        std::vector<PyLayerDesc> _layerDescs;
+
         swarm::Hierarchy _h;
         swarm::OptimizerMAB _opt;
 
@@ -37,6 +40,9 @@ namespace pyswarm {
         PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms);
 
         void step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled = true);
+
+        void save(const std::string &fileName);
+        bool load(const std::string &fileName);
 
         int getNumLayers() {
             return _h.getLayers().size();
@@ -57,10 +63,6 @@ namespace pyswarm {
             _opt._alpha = value;
         }
 
-        void setOptBeta(float value) {
-            _opt._beta = value;
-        }
-
         void setOptEpsilon(float value) {
             _opt._epsilon = value;
         }
@@ -71,10 +73,6 @@ namespace pyswarm {
 
         float getOptAlpha() const {
             return _opt._alpha;
-        }
-
-        float getOptBeta() const {
-            return _opt._beta;
         }
 
         float getOptEpsilon() const {
