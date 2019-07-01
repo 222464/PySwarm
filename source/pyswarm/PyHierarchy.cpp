@@ -78,8 +78,10 @@ void PyHierarchy::save(const std::string &fileName) {
             os.write(reinterpret_cast<const char*>(params[i]->data()), params[i]->size() * sizeof(float));
     }
 
-    os.write(reinterpret_cast<const char*>(&_opt.getValues()), _opt.getValues().size() * sizeof(float));
-    os.write(reinterpret_cast<const char*>(&_opt.getIndices()), _opt.getIndices().size() * sizeof(int));
+    for (int i = 0; i < _opt.getIndices.size(); i++) {
+        os.write(reinterpret_cast<const char*>(_opt.getValues()[i].data()), _opt.getValues()[i].size() * sizeof(float));
+        os.write(reinterpret_cast<const char*>(_opt.getIndices()[i].data()), _opt.getIndices()[i].size() * sizeof(int));
+    }
 }
 
 bool PyHierarchy::load(const std::string &fileName) {
@@ -109,8 +111,10 @@ bool PyHierarchy::load(const std::string &fileName) {
             is.read(reinterpret_cast<char*>(params[i]->data()), params[i]->size() * sizeof(float));
     }
 
-    is.read(reinterpret_cast<char*>(&_opt.getValues()), _opt.getValues().size() * sizeof(float));
-    is.read(reinterpret_cast<char*>(&_opt.getIndices()), _opt.getIndices().size() * sizeof(int));
+    for (int i = 0; i < _opt.getIndices.size(); i++) {
+        is.read(reinterpret_cast<char*>(_opt.getValues()[i].data()), _opt.getValues()[i].size() * sizeof(float));
+        is.read(reinterpret_cast<char*>(_opt.getIndices()[i].data()), _opt.getIndices()[i].size() * sizeof(int));
+    }
 
     return true;
 }
