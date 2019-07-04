@@ -68,11 +68,11 @@ namespace pyswarm {
         }
 
         void setOptMu(float value) {
-            _opt._alpha = value;
+            _opt._mu = value;
         }
 
         void setOptSigma(float value) {
-            _opt._beta = value;
+            _opt._sigma = value;
         }
 
         float getOptAlpha() const {
