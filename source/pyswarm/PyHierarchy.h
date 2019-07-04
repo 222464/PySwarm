@@ -37,7 +37,7 @@ namespace pyswarm {
         swarm::OptimizerDynamic _opt;
 
     public:
-        PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms);
+        PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs);
 
         void step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled = true);
 
