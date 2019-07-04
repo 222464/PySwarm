@@ -3,7 +3,7 @@
 #include "PyConstructs.h"
 #include "PyComputeSystem.h"
 #include <swarm/Hierarchy.h>
-#include <swarm/OptimizerMAB.h>
+#include <swarm/OptimizerDynamic.h>
 
 namespace pyswarm {
     struct PyLayerDesc {
@@ -34,7 +34,7 @@ namespace pyswarm {
         std::vector<PyLayerDesc> _layerDescs;
 
         swarm::Hierarchy _h;
-        swarm::OptimizerMAB _opt;
+        swarm::OptimizerDynamic _opt;
 
     public:
         PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms);
@@ -63,24 +63,32 @@ namespace pyswarm {
             _opt._alpha = value;
         }
 
-        void setOptEpsilon(float value) {
-            _opt._epsilon = value;
+        void setOptBeta(float value) {
+            _opt._beta = value;
         }
 
-        void setOptPlayTime(int value) {
-            _opt._playTime = value;
+        void setOptMu(float value) {
+            _opt._alpha = value;
+        }
+
+        void setOptSigma(float value) {
+            _opt._beta = value;
         }
 
         float getOptAlpha() const {
             return _opt._alpha;
         }
 
-        float getOptEpsilon() const {
-            return _opt._epsilon;
+        float getOptBeta() const {
+            return _opt._beta;
         }
 
-        float getOptPlayTime() const {
-            return _opt._playTime;
+        float getOptMu() const {
+            return _opt._mu;
+        }
+
+        float getOptSigma() const {
+            return _opt._sigma;
         }
     };
 }
