@@ -74,7 +74,7 @@ namespace pyswarm {
         float getOptAlpha() const {
             return _opt._alpha;
         }
-
+        
         float getOptEpsilon() const {
             return _opt._epsilon;
         }
