@@ -59,9 +59,9 @@ namespace pyswarm {
         }
 
         // Optimizer parameter getters/setters
-        // void setOptAlpha(float value) {
-        //     _opt._alpha = value;
-        // }
+        void setOptAlpha(float value) {
+            _opt._alpha = value;
+        }
 
         void setOptGamma(float value) {
             _opt._gamma = value;
@@ -76,9 +76,9 @@ namespace pyswarm {
             _opt._playTime = value;
         }
 
-        // float getOptAlpha() const {
-        //     return _opt._alpha;
-        // }
+        float getOptAlpha() const {
+            return _opt._alpha;
+        }
 
         float getOptGamma() const {
             return _opt._gamma;
