@@ -30,6 +30,8 @@
 %template(StdVecInt3) std::vector<pyswarm::PyInt3>;
 %template(StdVecLayerDesc) std::vector<pyswarm::PyLayerDesc>;
 
+%rename("%(strip:[Py])s") ""; // Remove Py prefix that was added to avoid naming collisions
+
 %include "PyConstructs.h"
 %include "PyComputeSystem.h"
 %include "PyHierarchy.h"

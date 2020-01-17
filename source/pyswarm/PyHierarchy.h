@@ -7,34 +7,34 @@
 
 namespace pyswarm {
     struct PyLayerDesc {
-        std::string _layerType; // Can be: "conv", "pool"
+        std::string layerType; // Can be: "conv", "pool"
 
         // Conv
-        int _spatialFilterRadius;
-        int _spatialFilterStride;
-        int _recurrentFilterRadius;
-        int _numMaps;
-        float _actScalar;
-        float _recurrentScalar;
+        int spatialFilterRadius;
+        int spatialFilterStride;
+        int recurrentFilterRadius;
+        int numMaps;
+        float actScalar;
+        float recurrentScalar;
 
         // Pool
-        int _poolDiv;
+        int poolDiv;
 
         PyLayerDesc()
-        : _layerType("conv"), _spatialFilterRadius(1), _spatialFilterStride(1), _recurrentFilterRadius(1), _numMaps(16), _actScalar(5.0f), _recurrentScalar(0.5f), _poolDiv(2)
+        : layerType("conv"), spatialFilterRadius(1), spatialFilterStride(1), recurrentFilterRadius(1), numMaps(16), actScalar(5.0f), recurrentScalar(0.5f), poolDiv(2)
         {}
 
         PyLayerDesc(const PyInt3 &stateSize, const std::string &layerType, int spatialFilterRadius, int spatialFilterStride, int recurrentFilterRadius, int numMaps, float actScalar, float recurrentScalar, int poolDiv)
-        : _layerType(layerType), _spatialFilterRadius(spatialFilterRadius), _spatialFilterStride(spatialFilterStride), _recurrentFilterRadius(recurrentFilterRadius), _numMaps(numMaps), _actScalar(actScalar), _recurrentScalar(recurrentScalar), _poolDiv(poolDiv)
+        : layerType(layerType), spatialFilterRadius(spatialFilterRadius), spatialFilterStride(spatialFilterStride), recurrentFilterRadius(recurrentFilterRadius), numMaps(numMaps), actScalar(actScalar), recurrentScalar(recurrentScalar), poolDiv(poolDiv)
         {}
     };
 
     class PyHierarchy {
     private:
-        std::vector<PyLayerDesc> _layerDescs;
+        std::vector<PyLayerDesc> layerDescs;
 
-        swarm::Hierarchy _h;
-        swarm::OptimizerMAB _opt;
+        swarm::Hierarchy h;
+        swarm::OptimizerMAB opt;
 
     public:
         PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms);
@@ -45,42 +45,42 @@ namespace pyswarm {
         bool load(const std::string &fileName);
 
         int getNumLayers() {
-            return _h.getLayers().size();
+            return h.getLayers().size();
         }
 
         const std::vector<float> &getOutputStates() {
-            return _h.getLayers().back()->getStates();
+            return h.getLayers().back()->getStates();
         }
 
         PyInt3 getOutputSize() {
-            swarm::Int3 size = _h.getLayers().back()->getStateSize();
+            swarm::Int3 size = h.getLayers().back()->getStateSize();
 
             return PyInt3(size.x, size.y, size.z);
         }
 
         // Optimizer parameter getters/setters
         void setOptAlpha(float value) {
-            _opt._alpha = value;
+            opt.alpha = value;
         }
 
         void setOptEpsilon(float value) {
-            _opt._epsilon = value;
+            opt.epsilon = value;
         }
 
         void setOptPlayTime(int value) {
-            _opt._playTime = value;
+            opt.playTime = value;
         }
 
         float getOptAlpha() const {
-            return _opt._alpha;
+            return opt.alpha;
         }
         
         float getOptEpsilon() const {
-            return _opt._epsilon;
+            return opt.epsilon;
         }
 
         float getOptPlayTime() const {
-            return _opt._playTime;
+            return opt.playTime;
         }
     };
 }

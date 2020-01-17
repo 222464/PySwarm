@@ -8,64 +8,64 @@
 using namespace pyswarm;
 
 PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms) {
-    _layerDescs = layerDescs;
+    this->layerDescs = layerDescs;
 
     std::vector<std::shared_ptr<swarm::Layer>> layers(layerDescs.size());
 
     swarm::Int3 sizePrev = swarm::Int3(inputSize.x, inputSize.y, inputSize.z);
 
     for (int i = 0; i < layers.size(); i++) {
-        if (layerDescs[i]._layerType == "conv") {
+        if (layerDescs[i].layerType == "conv") {
             std::shared_ptr<swarm::LayerConv> l = std::make_shared<swarm::LayerConv>();
 
-            l->create(cs._cs, sizePrev, layerDescs[i]._numMaps, layerDescs[i]._spatialFilterRadius, layerDescs[i]._spatialFilterStride, layerDescs[i]._recurrentFilterRadius);
+            l->create(cs.cs, sizePrev, layerDescs[i].numMaps, layerDescs[i].spatialFilterRadius, layerDescs[i].spatialFilterStride, layerDescs[i].recurrentFilterRadius);
 
-            l->_actScalar = layerDescs[i]._actScalar;
-            l->_recurrentScalar = layerDescs[i]._recurrentScalar;
+            l->actScalar = layerDescs[i].actScalar;
+            l->recurrentScalar = layerDescs[i].recurrentScalar;
             
             layers[i] = std::static_pointer_cast<swarm::Layer>(l);
 
             sizePrev = l->getStateSize();
         }
-        else if (layerDescs[i]._layerType == "pool") {
+        else if (layerDescs[i].layerType == "pool") {
             std::shared_ptr<swarm::LayerPool> l = std::make_shared<swarm::LayerPool>();
 
-            l->create(cs._cs, sizePrev, layerDescs[i]._poolDiv);
+            l->create(cs.cs, sizePrev, layerDescs[i].poolDiv);
 
             layers[i] = std::static_pointer_cast<swarm::Layer>(l);
 
             sizePrev = l->getStateSize();
         }
         else {
-            std::cerr << "Unrecognized layer type: " << layerDescs[i]._layerType << " (layer " << i << ")" << std::endl;
+            std::cerr << "Unrecognized layer type: " << layerDescs[i].layerType << " (layer " << i << ")" << std::endl;
             abort();
         }
     }
 
-    _h.create(layers);
+    h.create(layers);
 
-    _opt.create(cs._cs, _h.getNumParameters(), numArms);
+    opt.create(cs.cs, h.getNumParameters(), numArms);
 }
 
 void PyHierarchy::step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled) {
-    _h.activate(cs._cs, inputStates);
+    h.activate(cs.cs, inputStates);
 
     if (learnEnabled)
-        _h.optimize(cs._cs, &_opt, reward);
+        h.optimize(cs.cs, &opt, reward);
 }
 
 void PyHierarchy::save(const std::string &fileName) {
     std::ofstream os(fileName);
 
-    int numLayers = _h.getNumParameters().size();
-    std::vector<swarm::FloatBuffer*> params = _h.getParameters();
+    int numLayers = h.getNumParameters().size();
+    std::vector<swarm::FloatBuffer*> params = h.getParameters();
 
     for (int i = 0; i < numLayers; i++) {
-        const swarm::FloatBuffer* states = &_h.getLayers()[i]->getStates();
+        const swarm::FloatBuffer* states = &h.getLayers()[i]->getStates();
         const swarm::FloatBuffer* statesPrev;
         
-        if (_layerDescs[i]._layerType == "conv")
-            statesPrev = &static_cast<swarm::LayerConv*>(_h.getLayers()[i].get())->getStatesPrev();
+        if (layerDescs[i].layerType == "conv")
+            statesPrev = &static_cast<swarm::LayerConv*>(h.getLayers()[i].get())->getStatesPrev();
         else
             statesPrev = nullptr;
 
@@ -78,9 +78,9 @@ void PyHierarchy::save(const std::string &fileName) {
             os.write(reinterpret_cast<const char*>(params[i]->data()), params[i]->size() * sizeof(float));
     }
 
-    for (int i = 0; i < _opt.getIndices().size(); i++) {
-        os.write(reinterpret_cast<const char*>(_opt.getValues()[i].data()), _opt.getValues()[i].size() * sizeof(float));
-        os.write(reinterpret_cast<const char*>(_opt.getIndices()[i].data()), _opt.getIndices()[i].size() * sizeof(int));
+    for (int i = 0; i < opt.getIndices().size(); i++) {
+        os.write(reinterpret_cast<const char*>(opt.getValues()[i].data()), opt.getValues()[i].size() * sizeof(float));
+        os.write(reinterpret_cast<const char*>(opt.getIndices()[i].data()), opt.getIndices()[i].size() * sizeof(int));
     }
 }
 
@@ -90,15 +90,15 @@ bool PyHierarchy::load(const std::string &fileName) {
     if (!is.is_open())
         return false;
 
-    int numLayers = _h.getNumParameters().size();
-    std::vector<swarm::FloatBuffer*> params = _h.getParameters();
+    int numLayers = h.getNumParameters().size();
+    std::vector<swarm::FloatBuffer*> params = h.getParameters();
 
     for (int i = 0; i < numLayers; i++) {
-        swarm::FloatBuffer* states = &_h.getLayers()[i]->getStates();
+        swarm::FloatBuffer* states = &h.getLayers()[i]->getStates();
         swarm::FloatBuffer* statesPrev;
         
-        if (_layerDescs[i]._layerType == "conv")
-            statesPrev = &static_cast<swarm::LayerConv*>(_h.getLayers()[i].get())->getStatesPrev();
+        if (layerDescs[i].layerType == "conv")
+            statesPrev = &static_cast<swarm::LayerConv*>(h.getLayers()[i].get())->getStatesPrev();
         else
             statesPrev = nullptr;
 
@@ -111,9 +111,9 @@ bool PyHierarchy::load(const std::string &fileName) {
             is.read(reinterpret_cast<char*>(params[i]->data()), params[i]->size() * sizeof(float));
     }
 
-    for (int i = 0; i < _opt.getIndices().size(); i++) {
-        is.read(reinterpret_cast<char*>(_opt.getValues()[i].data()), _opt.getValues()[i].size() * sizeof(float));
-        is.read(reinterpret_cast<char*>(_opt.getIndices()[i].data()), _opt.getIndices()[i].size() * sizeof(int));
+    for (int i = 0; i < opt.getIndices().size(); i++) {
+        is.read(reinterpret_cast<char*>(opt.getValues()[i].data()), opt.getValues()[i].size() * sizeof(float));
+        is.read(reinterpret_cast<char*>(opt.getIndices()[i].data()), opt.getIndices()[i].size() * sizeof(int));
     }
 
     return true;

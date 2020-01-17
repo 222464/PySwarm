@@ -3,7 +3,7 @@
 using namespace pyswarm;
 
 PyComputeSystem::PyComputeSystem(size_t numWorkers, unsigned long seed)
-: _cs(numWorkers)
+: cs(numWorkers)
 {
-    _cs._rng.seed(seed);
+    cs.rng.seed(seed);
 }
