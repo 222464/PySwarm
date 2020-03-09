@@ -18,7 +18,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
         if (layerDescs[i].layerType == "conv") {
             std::shared_ptr<swarm::LayerConv> l = std::make_shared<swarm::LayerConv>();
 
-            l->create(cs.cs, sizePrev, layerDescs[i].numMaps, layerDescs[i].spatialFilterRadius, layerDescs[i].spatialFilterStride, layerDescs[i].recurrentFilterRadius);
+            l->init(cs.cs, sizePrev, layerDescs[i].numMaps, layerDescs[i].spatialFilterRadius, layerDescs[i].spatialFilterStride, layerDescs[i].recurrentFilterRadius);
 
             l->actScalar = layerDescs[i].actScalar;
             l->recurrentScalar = layerDescs[i].recurrentScalar;
@@ -30,7 +30,7 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
         else if (layerDescs[i].layerType == "pool") {
             std::shared_ptr<swarm::LayerPool> l = std::make_shared<swarm::LayerPool>();
 
-            l->create(cs.cs, sizePrev, layerDescs[i].poolDiv);
+            l->init(cs.cs, sizePrev, layerDescs[i].poolDiv);
 
             layers[i] = std::static_pointer_cast<swarm::Layer>(l);
 
@@ -42,9 +42,9 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
         }
     }
 
-    h.create(layers);
+    h.init(layers);
 
-    opt.create(cs.cs, h.getNumParameters(), numArms);
+    opt.init(cs.cs, h.getNumParameters(), numArms);
 }
 
 void PyHierarchy::step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled) {
