@@ -1,5 +1,4 @@
-# CMake version 3.1+ is required to enable C++14 features cleanly
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(PySwarm)
 
@@ -19,7 +18,6 @@ if(PYTHON_VERSION)
     message("Python target version: ${PYTHON_VERSION}")            
 endif()
 
-
 ############################################################################
 # Add the OpenMP library
 
@@ -35,25 +33,25 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}") # This links -fope
 
 find_package(Swarm REQUIRED)
 
-include_directories(${SWARM_INCLUDE_DIR})
+include_directories(${OGMANEO_INCLUDE_DIR})
 
 
 ############################################################################
-# Add the PySwarm library
+# Add the PySwarmCpp library
 
-set(PYSWARM_INCLUDE_DIR "source/pyswarm;")
+set(PYOGMANEO_INCLUDE_DIR "source/pyswarm;")
 
-include_directories(${PYSWARM_INCLUDE_DIR})
+include_directories(${PYOGMANEO_INCLUDE_DIR})
 
-file(GLOB_RECURSE PYSWARM_SRC
+file(GLOB_RECURSE PYOGMANEO_SRC
     "source/pyswarm/*.h"
     "source/pyswarm/*.cpp"
 )
 
-add_library(PySwarm ${PYSWARM_SRC})
+add_library(PySwarmCpp ${PYOGMANEO_SRC})
 
-target_link_libraries(PySwarm ${OpenMP_CXX_LIBRARIES})
-target_link_libraries(PySwarm ${SWARM_LIBRARIES})
+target_link_libraries(PySwarmCpp ${OpenMP_CXX_LIBRARIES})
+target_link_libraries(PySwarmCpp ${OGMANEO_LIBRARIES})
 
 
 ############################################################################
@@ -84,12 +82,13 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+#set_source_files_properties(pyswarm.i PROPERTIES SWIG_MODULE_NAME pyswarm)
 set_source_files_properties(pyswarm.i PROPERTIES CPLUSPLUS ON)
 
-swig_add_module(pyswarm python pyswarm.i)
+swig_add_library(pyswarm LANGUAGE python SOURCES pyswarm.i)
 
-swig_link_libraries(pyswarm PySwarm ${PYTHON_LIBRARIES})
+target_link_libraries(pyswarm PySwarmCpp ${PYTHON_LIBRARIES})
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SWIG_OUTDIR})
-install(TARGETS _pyswarm DESTINATION ${CMAKE_SWIG_OUTDIR})
+install(TARGETS pyswarm DESTINATION ${CMAKE_SWIG_OUTDIR})
 install(FILES ${CMAKE_BINARY_DIR}/pyswarm.py DESTINATION ${CMAKE_SWIG_OUTDIR})

@@ -141,14 +141,16 @@ class build_ext_subclass(build_ext):
                 self.mkpath(os.path.dirname(ext_path))
                 print('Moving library', built_ext,
                       'to build path', ext_path)
-                shutil.move(built_ext, ext_path)
+                shutil.copy(built_ext, ext_path)
+                shutil.copy(ext_path, saved_cwd)
                 self._found_names.append("_pyswarm")
 
                 built_py = self.get_py_name("pyswarm")
                 py_path = os.path.join(build_lib, built_py)
                 print('Moving Py file', built_py,
                       'to build path', py_path)
-                shutil.move(built_py, py_path)
+                shutil.copy(built_py, py_path)
+                shutil.copy(py_path, saved_cwd)
             else:
                 raise RuntimeError('C-extension failed to build:',
                                    os.path.abspath(built_ext))
