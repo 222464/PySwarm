@@ -5,13 +5,21 @@
 #include <iostream>
 
 namespace pyswarm {
-    class PyComputeSystem {
-    private:
-        swarm::ComputeSystem cs;
+class PyComputeSystem {
+private:
+    swarm::ComputeSystem cs;
 
-    public:
-        PyComputeSystem(size_t numWorkers, unsigned long seed = 1234);
+public:
+    PyComputeSystem(
+        unsigned long seed = 1234
+    );
 
-        friend class PyHierarchy;
-    };
-}
+    static void setNumThreads(
+        int numThreads
+    );
+
+    static int getNumThreads();
+
+    friend class PyHierarchy;
+};
+} // namespace pyswarm

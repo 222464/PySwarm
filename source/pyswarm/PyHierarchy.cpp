@@ -7,7 +7,12 @@
 
 using namespace pyswarm;
 
-PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std::vector<PyLayerDesc> &layerDescs, int numArms) {
+PyHierarchy::PyHierarchy(
+    PyComputeSystem &cs,
+    const PyInt3 &inputSize,
+    const std::vector<PyLayerDesc> &layerDescs,
+    int numArms
+) {
     this->layerDescs = layerDescs;
 
     std::vector<std::shared_ptr<swarm::Layer>> layers(layerDescs.size());
@@ -47,14 +52,21 @@ PyHierarchy::PyHierarchy(PyComputeSystem &cs, const PyInt3 &inputSize, const std
     opt.init(cs.cs, h.getNumParameters(), numArms);
 }
 
-void PyHierarchy::step(PyComputeSystem &cs, const std::vector<float> &inputStates, float reward, bool learnEnabled) {
+void PyHierarchy::step(
+    PyComputeSystem &cs,
+    const std::vector<float> &inputStates,
+    float reward,
+    bool learnEnabled
+) {
     h.activate(cs.cs, inputStates);
 
     if (learnEnabled)
         h.optimize(cs.cs, &opt, reward);
 }
 
-void PyHierarchy::save(const std::string &fileName) {
+void PyHierarchy::save(
+    const std::string &fileName
+) {
     std::ofstream os(fileName);
 
     int numLayers = h.getNumParameters().size();
@@ -84,7 +96,9 @@ void PyHierarchy::save(const std::string &fileName) {
     }
 }
 
-bool PyHierarchy::load(const std::string &fileName) {
+bool PyHierarchy::load(
+    const std::string &fileName
+) {
     std::ifstream is(fileName);
 
     if (!is.is_open())

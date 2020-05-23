@@ -21,6 +21,16 @@ endif()
 
 
 ############################################################################
+# Add the OpenMP library
+
+find_package(OpenMP REQUIRED)
+ 
+include_directories(${OpenMP_CXX_INCLUDE_DIRS})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}") # This links -fopenmp
+
+
+############################################################################
 # Add the Swarm library
 
 find_package(Swarm REQUIRED)
@@ -42,6 +52,7 @@ file(GLOB_RECURSE PYSWARM_SRC
 
 add_library(PySwarm ${PYSWARM_SRC})
 
+target_link_libraries(PySwarm ${OpenMP_CXX_LIBRARIES})
 target_link_libraries(PySwarm ${SWARM_LIBRARIES})
 
 
