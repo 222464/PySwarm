@@ -33,25 +33,25 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}") # This links -fope
 
 find_package(Swarm REQUIRED)
 
-include_directories(${OGMANEO_INCLUDE_DIR})
+include_directories(${SWARM_INCLUDE_DIR})
 
 
 ############################################################################
 # Add the PySwarmCpp library
 
-set(PYOGMANEO_INCLUDE_DIR "source/pyswarm;")
+set(PYSWARM_INCLUDE_DIR "source/pyswarm;")
 
-include_directories(${PYOGMANEO_INCLUDE_DIR})
+include_directories(${PYSWARM_INCLUDE_DIR})
 
-file(GLOB_RECURSE PYOGMANEO_SRC
+file(GLOB_RECURSE PYSWARM_SRC
     "source/pyswarm/*.h"
     "source/pyswarm/*.cpp"
 )
 
-add_library(PySwarmCpp ${PYOGMANEO_SRC})
+add_library(PySwarmCpp ${PYSWARM_SRC})
 
 target_link_libraries(PySwarmCpp ${OpenMP_CXX_LIBRARIES})
-target_link_libraries(PySwarmCpp ${OGMANEO_LIBRARIES})
+target_link_libraries(PySwarmCpp ${SWARM_LIBRARIES})
 
 
 ############################################################################
